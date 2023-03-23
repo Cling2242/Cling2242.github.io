@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="引用： 参考链接1 参考链接2		  元数据元数据是指&#x3D;&#x3D;关于数据的数据&#x3D;&#x3D;。在这方面，数据是指您的数字资产，如图像。 元数据对于有效管理资产至关重要。 元数据是资产可用的所有数据的集合，但不一定包含在该图像中。 元数据的一些示例包括：  资产的名称。 上次修改的时间和日期。 资产存储在存储库中时的大小。 其所包含文件夹的名称。 相关资产或已应用的标记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图片地理位置查找-延伸(原数据抓取)">
+<meta property="og:url" content="http://example.com/2022/04/03/003Map_and_MetaData/index.html">
+<meta property="og:site_name" content="陈功的小博客">
+<meta property="og:description" content="引用： 参考链接1 参考链接2		  元数据元数据是指&#x3D;&#x3D;关于数据的数据&#x3D;&#x3D;。在这方面，数据是指您的数字资产，如图像。 元数据对于有效管理资产至关重要。 元数据是资产可用的所有数据的集合，但不一定包含在该图像中。 元数据的一些示例包括：  资产的名称。 上次修改的时间和日期。 资产存储在存储库中时的大小。 其所包含文件夹的名称。 相关资产或已应用的标记。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205132155055.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205132156351.png">
+<meta property="og:image" content="https://gitee.com/cling5899/Typora-img/raw/master/img/20220327162941.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205132156018.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205132156421.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205132156736.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205132156056.png">
+<meta property="article:published_time" content="2022-04-03T01:25:00.000Z">
+<meta property="article:modified_time" content="2023-03-23T13:51:20.078Z">
+<meta property="article:author" content="Long Chen">
+<meta property="article:tag" content="map">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205132155055.png">
+
+<link rel="canonical" href="http://example.com/2022/04/03/003Map_and_MetaData/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>图片地理位置查找-延伸(原数据抓取) | 陈功的小博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">陈功的小博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/03/003Map_and_MetaData/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Long Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈功的小博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          图片地理位置查找-延伸(原数据抓取)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-03 09:25:00" itemprop="dateCreated datePublished" datetime="2022-04-03T09:25:00+08:00">2022-04-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-23 21:51:20" itemprop="dateModified" datetime="2023-03-23T21:51:20+08:00">2023-03-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%83%E6%95%B0%E6%8D%AE/" itemprop="url" rel="index"><span itemprop="name">元数据</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>引用：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_44934536/article/details/89397512?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522164836104916782092935687%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=164836104916782092935687&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-9-89397512.142%5Ev5%5Epc_search_result_control_group,143%5Ev6%5Eregister&utm_term=%E9%80%9A%E8%BF%87%E5%9B%BE%E7%89%87%E6%89%BE%E5%88%B0%E5%9C%B0%E7%90%86%E4%BD%8D%E7%BD%AE&spm=1018.2226.3001.4187">参考链接1</a></p>
+<p><a target="_blank" rel="noopener" href="https://experienceleague.adobe.com/docs/experience-manager-65/assets/administer/metadata-concepts.html?lang=zh-Hans">参考链接2</a>		</p>
+</blockquote>
+<h1 id="元数据"><a href="#元数据" class="headerlink" title="元数据"></a>元数据</h1><p>元数据是指&#x3D;&#x3D;关于数据的数据&#x3D;&#x3D;。在这方面，数据是指您的数字资产，如图像。 元数据对于有效管理资产至关重要。</p>
+<p>元数据是资产可用的所有数据的集合，但不一定包含在该图像中。 元数据的一些示例包括：</p>
+<ul>
+<li>资产的名称。</li>
+<li>上次修改的时间和日期。</li>
+<li>资产存储在存储库中时的大小。</li>
+<li>其所包含文件夹的名称。</li>
+<li>相关资产或已应用的标记。</li>
+</ul>
+<img src="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205132155055.png"  />
+
+<table>
+<thead>
+<tr>
+<th>技术元数据（自动创建）</th>
+<th>描述性元数据（无法全自动创建）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文件的大小。</td>
+<td>资产所来自的业务（使用的什么软件）</td>
+</tr>
+<tr>
+<td>Dimension（高度和宽度）</td>
+<td>GPS的相机自动跟踪的纬度和经度</td>
+</tr>
+<tr>
+<td>音频或视频文件的比特率</td>
+<td><strong>需要其他服务来创建该数据</strong></td>
+</tr>
+<tr>
+<td>图像的分辨率（详细程度）</td>
+<td>XMP、 ID3、 Exif、 其他从Microsoft Word、PowerPoint、Excel等。</td>
+</tr>
+</tbody></table>
+<h2 id="XMP"><a href="#XMP" class="headerlink" title="XMP"></a>XMP</h2><p>Extensible Metadata Platform (XMP)是用于所有元数据管理 Experience Manager Assets 的开放标准。该标准提供了&#x3D;&#x3D;可嵌入所有文件格式的通用元数据编码&#x3D;&#x3D;。 Adobe和其他公司支持XMP standard，因为它提供了丰富的内容模型。 XMP standard和Experience Manager Assets的用户拥有强大的基础平台。</p>
+<h2 id="ID3"><a href="#ID3" class="headerlink" title="ID3"></a>ID3</h2><p>当您在计算机或便携式 MP3 播放器上播放&#x3D;&#x3D;数字音频文件&#x3D;&#x3D;时，会显示这些 ID3 标记中存储的数据。</p>
+<p>ID3 标记是专为 MP3 文件格式而设计。有关各种格式的其他信息如下：</p>
+<ul>
+<li>ID3标记在MP3和mp3PRO文件中有效。</li>
+<li>WAV 无标记。</li>
+<li>WMA具有不允许开源实施的专有标记。</li>
+<li>Ogg Vorbis 使用嵌入在 Ogg 容器中的 Xiph 注释。</li>
+<li>AAC 使用专有标记格式。</li>
+</ul>
+<h2 id="Exif"><a href="#Exif" class="headerlink" title="Exif"></a>Exif</h2><p>&#x3D;&#x3D;可交换图像文件格式&#x3D;&#x3D;(Exif)是数字摄影中最常用的元数据格式。 它提供了一种在多种文件格式（如JPEG、TIFF、RIFF和WAV）中嵌入固定的元数据属性词汇的方法。 Exif将元数据存储为元数据名称和元数据值的对。这些元数据名称 — 值对也称为标记，请不要将其与Experience Manager中的标记混淆。 现代数码相机创建Exif元数据，现代图形软件支持它。 Exif格式是元数据管理（尤其是对于图像）的最低常用分母。</p>
+<p>Exif的一个主要限制是一些常见的图像文件格式（如BMP、GIF或PNG）不支持它。</p>
+<p>Exif定义的元数据字段通常具有技术性，在描述性元数据管理中的用法有限。 因此，Experience Manager Assets提供了将Exif属性映射到<a target="_blank" rel="noopener" href="https://experienceleague.adobe.com/docs/experience-manager-65/assets/administer/metadata-schemas.html?lang=zh-Hans">常用元数据架构</a>和<a target="_blank" rel="noopener" href="https://experienceleague.adobe.com/docs/experience-manager-65/assets/administer/xmp-writeback.html?lang=zh-Hans">XMP</a>的功能。</p>
+<p><a target="_blank" rel="noopener" href="https://exiftool.org/**ExifTool">https://exiftool.org/**ExifTool</a> 是一个独立于平台的<a target="_blank" rel="noopener" href="https://exiftool.org/ExifTool.html">Perl 库</a>和一个<a target="_blank" rel="noopener" href="https://exiftool.org/exiftool_pod.html">命令行应用程序</a>，用于读取、写入和编辑 <a target="_blank" rel="noopener" href="https://exiftool.org/#supported">各种文件</a>中的元信息。**</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>contributor</td>
+<td>负责贡献内容的个人或公司。</td>
+</tr>
+<tr>
+<td>coverage</td>
+<td>资产覆盖的地理位置或时间段。</td>
+</tr>
+<tr>
+<td>creator</td>
+<td>负责创建内容的个人或公司。</td>
+</tr>
+<tr>
+<td>date</td>
+<td>与资产关联的日期或时间段。</td>
+</tr>
+<tr>
+<td>描述</td>
+<td>关于资产的详细信息。</td>
+</tr>
+<tr>
+<td>format</td>
+<td>资产的文件格式、物理介质或尺寸。Experience Manager 使 <code>dc:format</code> 用表示资产的MIME类型。</td>
+</tr>
+<tr>
+<td>标识符</td>
+<td>资产的唯一参考。</td>
+</tr>
+<tr>
+<td>语言</td>
+<td>资产的语言（例如，<code>en</code>表示英语）。</td>
+</tr>
+<tr>
+<td>publisher</td>
+<td>负责使资产进入可用状态的个人或公司。</td>
+</tr>
+<tr>
+<td>relation</td>
+<td>相关的资产。</td>
+</tr>
+<tr>
+<td>rights</td>
+<td>关于谁有权使用此资产的信息。</td>
+</tr>
+<tr>
+<td>source</td>
+<td>作为资产派生来源的相关资产。</td>
+</tr>
+<tr>
+<td>subject</td>
+<td>资产的主题。</td>
+</tr>
+<tr>
+<td>页面</td>
+<td>资产的名称。</td>
+</tr>
+<tr>
+<td>类型</td>
+<td>资产的性质或类型。</td>
+</tr>
+</tbody></table>
+<h1 id="如何在照片中查找地理位置等信息"><a href="#如何在照片中查找地理位置等信息" class="headerlink" title="如何在照片中查找地理位置等信息"></a>如何在照片中查找地理位置等信息</h1><p>这里的地理位置信息就属于描述性元数据中的一种，由exif或XMP等记录。</p>
+<blockquote>
+<p>可用Windows的文件右键属性界面查找，也可用支持exiftool的软件查看</p>
+</blockquote>
+<p>或者online的exiftool<a target="_blank" rel="noopener" href="http://exif-viewer.com/">http://exif-viewer.com/</a></p>
+<img src="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205132156351.png" alt="image-20220327154015447" style="zoom: 50%;" />
+
+<p><img src="https://gitee.com/cling5899/Typora-img/raw/master/img/20220327162941.png" alt="image-20220327154108497"></p>
+<img src="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205132156018.png" alt="image-20220327154139643" style="zoom: 50%;" />
+
+<blockquote>
+<p>或者，利用在线网站来查找图片的地理信息</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="http://metapicz.com/#landing">http://metapicz.com/#landing</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.pic2map.com/">https://www.pic2map.com/</a></p>
+<p><a target="_blank" rel="noopener" href="https://tool.geoimgr.com/">https://tool.geoimgr.com/</a></p>
+<p>三个网站每一个都可以得到图片的地理位置信息，并展示出来，&#x3D;&#x3D;第三个更为强大，可以把定位更改到任何地方&#x3D;&#x3D;</p>
+<p><img src="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205132156421.png" alt="image-20220327155900597"></p>
+<p><img src="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205132156736.png" alt="image-20220327155914011"></p>
+<p><img src="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205132156056.png" alt="image-20220327155928151"></p>
+<p>&#x3D;&#x3D;第三个可以把图片的位置信息改为任何自己想改的地方&#x3D;&#x3D;</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/map/" rel="tag"># map</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/02/002Google_Logo/" rel="prev" title="Google的Logo颜色参数">
+      <i class="fa fa-chevron-left"></i> Google的Logo颜色参数
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/04/004Xiaoke_Skillshare1/" rel="next" title="2022年“小科”自然科普协会线上学术技能分享会">
+      2022年“小科”自然科普协会线上学术技能分享会 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%83%E6%95%B0%E6%8D%AE"><span class="nav-number">1.</span> <span class="nav-text">元数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#XMP"><span class="nav-number">1.1.</span> <span class="nav-text">XMP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ID3"><span class="nav-number">1.2.</span> <span class="nav-text">ID3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exif"><span class="nav-number">1.3.</span> <span class="nav-text">Exif</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%9C%A8%E7%85%A7%E7%89%87%E4%B8%AD%E6%9F%A5%E6%89%BE%E5%9C%B0%E7%90%86%E4%BD%8D%E7%BD%AE%E7%AD%89%E4%BF%A1%E6%81%AF"><span class="nav-number">2.</span> <span class="nav-text">如何在照片中查找地理位置等信息</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Long Chen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Long Chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

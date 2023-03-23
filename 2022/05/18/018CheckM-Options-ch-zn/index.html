@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="CheckM的GitHub官网   CheckM英文帮助文档   参考链接 CheckM (宏)基因组质量评估 国家微生物科学数据中心-CheckM使用说明内有视频及PDF讲解，还可线上测试。  参考微信公众号宏基因组文章 BackgroundCheckM首先基于完整的已测序细菌基因组作为参考基因组，构建基因组的进化树，构建每个谱系（可以理解为一类物种）的单拷贝基因集（管家基因）（single">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Checkm操作实战">
+<meta property="og:url" content="http://example.com/2022/05/18/018CheckM-Options-ch-zn/index.html">
+<meta property="og:site_name" content="陈功的小博客">
+<meta property="og:description" content="CheckM的GitHub官网   CheckM英文帮助文档   参考链接 CheckM (宏)基因组质量评估 国家微生物科学数据中心-CheckM使用说明内有视频及PDF讲解，还可线上测试。  参考微信公众号宏基因组文章 BackgroundCheckM首先基于完整的已测序细菌基因组作为参考基因组，构建基因组的进化树，构建每个谱系（可以理解为一类物种）的单拷贝基因集（管家基因）（single">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205131933531.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205131933638.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205131933558.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205131933242.png">
+<meta property="article:published_time" content="2022-05-18T01:25:00.000Z">
+<meta property="article:modified_time" content="2023-03-23T13:51:33.967Z">
+<meta property="article:author" content="Long Chen">
+<meta property="article:tag" content="checkM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205131933531.png">
+
+<link rel="canonical" href="http://example.com/2022/05/18/018CheckM-Options-ch-zn/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Checkm操作实战 | 陈功的小博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">陈功的小博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/18/018CheckM-Options-ch-zn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Long Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈功的小博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Checkm操作实战
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-05-18 09:25:00" itemprop="dateCreated datePublished" datetime="2022-05-18T09:25:00+08:00">2022-05-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-23 21:51:33" itemprop="dateModified" datetime="2023-03-23T21:51:33+08:00">2023-03-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%8F%E5%9F%BA%E5%9B%A0%E7%BB%84/" itemprop="url" rel="index"><span itemprop="name">宏基因组</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/Ecogenomics/CheckM">CheckM的GitHub官网</a></p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/Ecogenomics/CheckM/wiki">CheckM英文帮助文档</a></p>
+</blockquote>
+<blockquote>
+<p>参考链接</p>
+<p><a target="_blank" rel="noopener" href="http://www.mselab.cn/detail/81/">CheckM (宏)基因组质量评估</a></p>
+<p><a target="_blank" rel="noopener" href="https://nmdc.cn/analyze/details?id=60063a780b38496ee0c908b0">国家微生物科学数据中心-CheckM使用说明</a>内有视频及PDF讲解，还可线上测试。</p>
+</blockquote>
+<p>参考微信公众号宏基因组文章</p>
+<h1 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h1><p>CheckM首先基于完整的已测序细菌基因组作为参考基因组，构建基因组的进化树，构建每个谱系（可以理解为一类物种）的单拷贝基因集（管家基因）（single copy genes，SCGs，为什么是单拷贝？因为这样可以开展基因组混合程度、污染程度等的评估）。在使用时，将我们的Bin与参考基因组一起建树，基于进化关系找到Bin的参考物种，然后结合参考物种的单拷贝基因集，计算两个重要指标</p>
+<p>Completeness，完整度，Bin基因与对应SCGs相比，基因数量是否完整，取值[0,100%]，数值越大，表示Bin质量越好； Contamination，污染度，Bin基因包含多个物种的SCGs，即一个Bin存在多个物种的程度，取值[0,100%]，数值越小，表示Bin质量越好。</p>
+<p>获得每个bin的污染度、完整度信息后，挑选高质量的bin进行物种、功能注释。再后续分析中，并没有固定标准。需要的数量多，则放宽阈值；需要的数量少，则提升阈值。其中，最常用的指标是污染度小于10%，且完整度大于80%。大家可以在这个基础上上下调整。</p>
+<blockquote>
+<p>得到了组装的bin的数据，CheckM下载完成，开始分析</p>
+</blockquote>
+<h1 id="CheckM的工作流程"><a href="#CheckM的工作流程" class="headerlink" title="CheckM的工作流程"></a>CheckM的工作流程</h1><p>lineage-specific（世系特异性）&#x3D;&#x3D;【推荐方法】&#x3D;&#x3D;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">checkm lineage_wf &lt;bin folder&gt; &lt;output folder&gt;</span><br><span class="line">##根据基因组在参考基因组发育树中的位置，来推断它的single-copy基因集，需要有checkM的数据库</span><br></pre></td></tr></table></figure>
+
+<p>taxonomic-specific（物种分类特异性）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">checkm taxonomy_wf &lt;rank&gt; &lt;taxon&gt; &lt;bin folder&gt; &lt;output folder&gt; &lt;rank&gt;: phylum; &lt;taxon&gt; : Cyanobacteria</span><br><span class="line">##自己知道自己的数据来自哪个门，什么科的</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>custom marker genes（自行指定基因maker）</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">checkm analyze &lt;custom HMM file&gt; &lt;bin folder&gt; &lt;output folder&gt;</span><br><span class="line">checkm qa &lt;custom HMM file&gt; &lt;output folder&gt;</span><br><span class="line">##自己预测了基因maker，&lt;custom HMM file&gt;就是预测的结果</span><br></pre></td></tr></table></figure>
+
+<h1 id="【推荐方法】"><a href="#【推荐方法】" class="headerlink" title="【推荐方法】"></a>【推荐方法】</h1><p>lineage-specific（世系特异性）（使用该方法需下载checkM的参考数据集，并设置安装在相应位置）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">##下载数据库，并解压设置路径</span><br><span class="line">wget -c https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz</span><br><span class="line">tar -zxvf checkm_data_2015_01_16.tar.gz</span><br><span class="line">checkm data setRoot $PATH/checkm_data</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>&#x3D;&#x3D;主要操作命令&#x3D;&#x3D;</p>
+<h2 id="checkm-lineage-wf-h的详细参数-主要用这个"><a href="#checkm-lineage-wf-h的详细参数-主要用这个" class="headerlink" title="checkm lineage_wf -h的详细参数(主要用这个)"></a>checkm lineage_wf -h的详细参数(主要用这个)</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">$ checkm lineage_wf -h</span><br><span class="line">usage: checkm lineage_wf [-h] [-r] [--ali] [--nt] [-g] [-u UNIQUE] [-m MULTI]</span><br><span class="line">                         [--force_domain] [--no_refinement]</span><br><span class="line">                         [--individual_markers] [--skip_adj_correction]</span><br><span class="line">                         [--skip_pseudogene_correction]</span><br><span class="line">                         [--aai_strain AAI_STRAIN] [-a ALIGNMENT_FILE]</span><br><span class="line">                         [--ignore_thresholds] [-e E_VALUE] [-l LENGTH]</span><br><span class="line">                         [-f FILE] [--tab_table] [-x EXTENSION] [-t THREADS]</span><br><span class="line">                         [--pplacer_threads PPLACER_THREADS] [-q]</span><br><span class="line">                         [--tmpdir TMPDIR]</span><br><span class="line">                         bin_dir output_dir</span><br><span class="line"></span><br><span class="line">Runs tree, lineage_set, analyze, qa #跑tree、lineage_set、analyze、qa这四个操作</span><br><span class="line"></span><br><span class="line">positional arguments:##位置参数</span><br><span class="line">  bin_dir               directory containing bins (fasta format)###你组装得到bin的目录</span><br><span class="line">  output_dir            directory to write output files##写入输出文件的目录</span><br><span class="line"></span><br><span class="line">optional arguments:##可选参数</span><br><span class="line">  -h, --help            show this help message and exit##就是我不了解参数，救命</span><br><span class="line">  -r, --reduced_tree    use reduced tree (requires &lt;16GB of memory) for determining lineage of each bin##使用精简树(需要小于16 GB的内存)来确定每个箱的谱系</span><br><span class="line">  --ali                 generate HMMER alignment file for each bin##为每个条柱生成HMMER对齐文件</span><br><span class="line">  --nt                  generate nucleotide gene sequences for each bin##为每个bin生成核苷酸基因序列</span><br><span class="line">  -g, --genes           bins contain genes as amino acids instead of nucleotide contigs##bin中含有氨基酸而不是核苷酸重叠群的基因</span><br><span class="line">  -u, --unique UNIQUE   minimum number of unique phylogenetic markers required to use lineage-specific marker set (default: 10)##使用谱系特定标记集所需的唯一系统发育标记的最小数量(默认值：10)</span><br><span class="line">  -m, --multi MULTI     maximum number of multi-copy phylogenetic markers before defaulting to domain-level marker set (default: 10)##默认设置为域级标记集之前的多拷贝系统发育标记的最大数量(默认值：10)</span><br><span class="line">  --force_domain        use domain-level sets for all bins##对所有bin使用域级别集</span><br><span class="line">  --no_refinement       do not perform lineage-specific marker set refinement##不执行特定于谱系的标记集细化</span><br><span class="line">  --individual_markers  treat marker as independent (i.e., ignore co-located set structure)##将标记视为独立的（即忽略共存的集合结构）</span><br><span class="line">  --skip_adj_correction</span><br><span class="line">                        do not exclude adjacent marker genes when estimating contamination##在估计污染时不排除相邻的标记基因</span><br><span class="line">  --skip_pseudogene_correction</span><br><span class="line">                        skip identification and filtering of pseudogenes##假基因的跳跃识别与过滤</span><br><span class="line">  --aai_strain AAI_STRAIN</span><br><span class="line">                        AAI threshold used to identify strain heterogeneity (default: 0.9)##用于识别菌株异质性的AAI阈值(默认值：0.9)</span><br><span class="line">  -a, --alignment_file ALIGNMENT_FILE</span><br><span class="line">                        produce file showing alignment of multi-copy genes and their AAI identity##生成显示多拷贝基因的比对及其AAI身份的文件</span><br><span class="line">  --ignore_thresholds   ignore model-specific score thresholds##忽略特定于型号的分数阈值</span><br><span class="line">  -e, --e_value E_VALUE</span><br><span class="line">                        e-value cut off (default: 1e-10)##E值截止(默认：1e-10)</span><br><span class="line">  -l, --length LENGTH   percent overlap between target and query (default: 0.7)##目标和查询之间的重叠百分比(默认值：0.7)</span><br><span class="line">  -f, --file FILE       print results to file (default: stdout)##将结果打印到文件（默认：stdout）</span><br><span class="line">  --tab_table           print tab-separated values table##打印制表符分隔的值表</span><br><span class="line">  -x, --extension EXTENSION</span><br><span class="line">                        extension of bins (other files in directory are ignored) (default: fna)##Bin的扩展名(忽略目录中的其他文件)(默认：FNA)</span><br><span class="line">  -t, --threads THREADS</span><br><span class="line">                        number of threads (default: 1)##线程数(默认为1)</span><br><span class="line">  --pplacer_threads PPLACER_THREADS</span><br><span class="line">                        number of threads used by pplacer (memory usage increases linearly with additional threads) (default: 1)##Pplacer使用的线程数(内存使用量随着线程的增加而线性增加)(默认值：1)</span><br><span class="line">  -q, --quiet           suppress console output##抑制控制台输出</span><br><span class="line">  --tmpdir TMPDIR       specify an alternative directory for temporary files##为临时文件指定替代目录</span><br><span class="line"></span><br><span class="line">Example: checkm lineage_wf ./bins ./output</span><br></pre></td></tr></table></figure>
+
+<p>checkm的所有参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">usage: checkm</span><br><span class="line">              &#123;data,tree,tree_qa,lineage_set,taxon_list,taxon_set,analyze,qa,lineage_wf,taxonomy_wf,gc_plot,coding_plot,tetra_plot,dist_plot,gc_bias_plot,nx_plot,len_hist,marker_plot,unbinned,coverage,tetra,profile,ssu_finder,merge,outliers,modify,unique,test&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Overview一般不需要用到这块"><a href="#Overview一般不需要用到这块" class="headerlink" title="Overview一般不需要用到这块"></a>Overview一般不需要用到这块</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Overview</span><br><span class="line">Lineage-specific marker set##谱系特定的标记集</span><br><span class="line">tree: place bins in the reference genome tree##把bins放到参考基因组树中</span><br><span class="line">tree_qa: assess phylogenetic markers found in each bin##评估在每个bin中发现的系统发育标记</span><br><span class="line">lineage_set: infer lineage-specific marker sets for each bin##为每个仓位推断特定于谱系的标记集</span><br><span class="line"></span><br><span class="line">Taxonomic-specific marker set##特定于分类的标记集</span><br><span class="line">taxon_list: list available taxonomic-specific marker sets##列出可用的特定于分类的标记集</span><br><span class="line">taxon_set: infer taxonomic-specific marker set##推断特定于分类的标记集</span><br><span class="line"></span><br><span class="line">Apply marker set to genome bins##将标记集应用于基因组bins</span><br><span class="line">analyze: identify marker genes in bins##识别bins中的标记基因</span><br><span class="line">qa: assess bins for contamination and completeness##评估bins的污染性和完整</span><br></pre></td></tr></table></figure>
+
+<h5 id="unbinned"><a href="#unbinned" class="headerlink" title="unbinned"></a>unbinned</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">usage: checkm unbinned [-h] [-x EXTENSION] [-s MIN_SEQ_LEN] [-q]</span><br><span class="line">                       bin_dir seq_file output_seq_file output_stats_file</span><br><span class="line">Example: checkm unbinned ./bins seqs.fna unbinned.fna unbinned_stats.tsv</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">实战</span><br><span class="line">(py37) [chenl@cpu3 ~/textcheckm/radata]$ checkm unbinned -x fa /home/chenl/textcheckm/SRR5091453/bin /home/chenl/textcheckm/radata/SRR5091453_1_paired.fasta checkm-unbinned.txt checkm-unbinned-stats.txt</span><br><span class="line">##</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205131933531.png" alt="image-20220406185757519"></p>
+<p><img src="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205131933638.png" alt="image-20220406185819763"></p>
+<h5 id="coverage"><a href="#coverage" class="headerlink" title="coverage"></a>coverage</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">usage: checkm coverage [-h] [-x EXTENSION] [-r] [-a MIN_ALIGN]</span><br><span class="line">                       [-e MAX_EDIT_DIST] [-m MIN_QC] [-t THREADS] [-q]</span><br><span class="line">                       bin_dir output_file bam_files [bam_files ...]</span><br><span class="line">Example: checkm coverage ./bins coverage.tsv example_1.bam example_2.bam</span><br></pre></td></tr></table></figure>
+
+<h5 id="tetra"><a href="#tetra" class="headerlink" title="tetra"></a>tetra</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">usage: checkm tetra [-h] [-t THREADS] [-q] seq_file output_file</span><br><span class="line">Example: checkm tetra seqs.fna tetra.tsv</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">实战</span><br><span class="line">(py37) [chenl@cpu3 ~/textcheckm/radata]$ checkm tetra SRR5091453_1_paired.fasta SRR5091453-tetra.tsv</span><br><span class="line">##结果</span><br><span class="line">生成 SRR5091453-tetra.tsv</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205131933558.png" alt="image-20220406191115228"></p>
+<h5 id="profile"><a href="#profile" class="headerlink" title="profile"></a>profile</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">usage: checkm profile [-h] [-f FILE] [--tab_table] [-q] coverage_file</span><br><span class="line">Example: checkm profile coverage.tsv</span><br></pre></td></tr></table></figure>
+
+<h5 id="gc-plot-create-GC-histogram-and-delta-GC-plot"><a href="#gc-plot-create-GC-histogram-and-delta-GC-plot" class="headerlink" title="gc_plot: create GC histogram and delta-GC plot"></a>gc_plot: create GC histogram and delta-GC plot</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">usage: checkm gc_plot [-h] [--image_type &#123;eps,pdf,png,ps,svg&#125;] [--dpi DPI]</span><br><span class="line">                      [--font_size FONT_SIZE] [-x EXTENSION] [--width WIDTH]</span><br><span class="line">                      [--height HEIGHT] [-w GC_WINDOW_SIZE] [-b GC_BIN_WIDTH]</span><br><span class="line">                      [-q]</span><br><span class="line">                      bin_dir output_dir dist_value [dist_value ...]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">##实战##有的参数没设置，dist_value随便设置的</span><br><span class="line">checkm gc_plot --image_type pdf -x fa /home/chenl/textcheckm/SRR5091453/bin SRR5091453-gc_plot 50</span><br><span class="line">##结果</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/Cling5899/Personal_Typora_img/master/img/202205131933242.png" alt="image-20220408153324312"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/checkM/" rel="tag"># checkM</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/17/017Binning-METABAT2/" rel="prev" title="分箱Binning-MetaBAT2">
+      <i class="fa fa-chevron-left"></i> 分箱Binning-MetaBAT2
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/19/019Checkm-practice/" rel="next" title="Checkm操作试验">
+      Checkm操作试验 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Background"><span class="nav-number">1.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CheckM%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">CheckM的工作流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E3%80%90%E6%8E%A8%E8%8D%90%E6%96%B9%E6%B3%95%E3%80%91"><span class="nav-number">3.</span> <span class="nav-text">【推荐方法】</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#checkm-lineage-wf-h%E7%9A%84%E8%AF%A6%E7%BB%86%E5%8F%82%E6%95%B0-%E4%B8%BB%E8%A6%81%E7%94%A8%E8%BF%99%E4%B8%AA"><span class="nav-number">3.1.</span> <span class="nav-text">checkm lineage_wf -h的详细参数(主要用这个)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview%E4%B8%80%E8%88%AC%E4%B8%8D%E9%9C%80%E8%A6%81%E7%94%A8%E5%88%B0%E8%BF%99%E5%9D%97"><span class="nav-number">3.2.</span> <span class="nav-text">Overview一般不需要用到这块</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#unbinned"><span class="nav-number">3.2.0.0.1.</span> <span class="nav-text">unbinned</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#coverage"><span class="nav-number">3.2.0.0.2.</span> <span class="nav-text">coverage</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tetra"><span class="nav-number">3.2.0.0.3.</span> <span class="nav-text">tetra</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#profile"><span class="nav-number">3.2.0.0.4.</span> <span class="nav-text">profile</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#gc-plot-create-GC-histogram-and-delta-GC-plot"><span class="nav-number">3.2.0.0.5.</span> <span class="nav-text">gc_plot: create GC histogram and delta-GC plot</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Long Chen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Long Chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
